@@ -27,14 +27,8 @@ jobs:
         echo -e "#pragma once\n// Проверки отключены" > Marlin/src/inc/Changes.h
         echo -e "#pragma once\n// Проверки отключены" > Marlin/src/inc/SanityCheck.h
         
-        # 2. Убираем опечатку 'define' без решетки
-        sed -i 's/^define /#define /g' Marlin/Configuration.h
-
-        # 3. Отключаем стартовый экран (ошибка _Bootscreen.h)
-        sed -i 's/^#define SHOW_BOOTSCREEN/\/\/#define SHOW_BOOTSCREEN/g' Marlin/Configuration.h
-
-        # 4. Отключаем кастомный экран статуса (ошибка _Statusscreen.h)
-        sed -i 's/^#define SHOW_CUSTOM_STATUS_SCREEN/\/\/#define SHOW_CUSTOM_STATUS_SCREEN/g' Marlin/Configuration.h
+        # 4. Фикс PID: принудительно прописываем стандартные коэффициенты KP, KI, KD в конец файла
+        echo -e "\n#define DEFAULT_Kp 22.2\n#define DEFAULT_Ki 1.08\n#define DEFAULT_Kd 114.0" >> Marlin/Configuration.h
 
     - name: Run PlatformIO Build (Strict RC)
       run: |
