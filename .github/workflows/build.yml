@@ -25,7 +25,7 @@ jobs:
       run: |
         # Инструкция: Если сборка снова упадет, замените "stm32f103rc_btt" в строке ниже 
         # на "STM32F103RE_btt" (строго с соблюдением регистра букв)
-        pio run -e stm32f103rc_btt
+        pio run -e STM32F103RC_btt
 
     - name: Upload Firmware Artifact
       if: success() # Файл загрузится только при успешной сборке
