@@ -1,7 +1,7 @@
 name: Build Marlin Firmware
 
 on:
-  workflow_dispatch: # Позволяет запускать сборку вручную кнопкой
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,15 +14,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
-
-    - name: Cache Pip and PlatformIO
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cache/pip
-          ~/.platformio
-        key: ${{ runner.os }}-pio-${{ hashFiles('**/platformio.ini') }}
+        python-version: '3.11' # Обновили до стабильной 3.11
 
     - name: Install PlatformIO
       run: |
@@ -31,12 +23,13 @@ jobs:
 
     - name: Run PlatformIO Build
       run: |
-        # Здесь мы указываем окружение для платы SKR Mini E3 V2.
-        # Если у вас чип RE, замените на STM32F103RE_btt
+        # Инструкция: Если сборка снова упадет, замените "stm32f103rc_btt" в строке ниже 
+        # на "STM32F103RE_btt" (строго с соблюдением регистра букв)
         pio run -e stm32f103rc_btt
 
     - name: Upload Firmware Artifact
+      if: success() # Файл загрузится только при успешной сборке
       uses: actions/upload-artifact@v4
       with:
         name: Marlin-SKR-Mini-E3-V2
-        path: .pio/build/stm32f103rc_btt/firmware.bin
+        path: .pio/build/**/firmware.bin
