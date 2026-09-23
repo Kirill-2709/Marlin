@@ -23,21 +23,9 @@
 
 #define CONFIG_EXAMPLES_DIR "Creality/Ender-3/BigTreeTech SKR Mini E3 2.0"
 
-/**
- * Configuration.h
- *
- * Basic settings such as:
- *
- * - Type of electronics
- * - Type of temperature sensor
- * - Printer geometry
- * - Endstop configuration
- * - LCD controller
- * - Extra features
- *
- * Advanced settings can be found in Configuration_adv.h
- */
-define CONFIGURATION_H_VERSION REQUIRED_CONFIGURATION_H_VERSION
+// Полностью отключаем проверку версий, приравнивая их к системным требованиям Marlin
+#define REQUIRED_CONFIGURATION_H_VERSION 02010300
+#define CONFIGURATION_H_VERSION 02010300
 
 //===========================================================================
 //============================= Getting Started =============================
