@@ -27,8 +27,11 @@ jobs:
         echo -e "#pragma once\n// Проверки отключены" > Marlin/src/inc/Changes.h
         echo -e "#pragma once\n// Проверки отключены" > Marlin/src/inc/SanityCheck.h
         
-        # 4. Фикс PID: принудительно прописываем стандартные коэффициенты KP, KI, KD в конец файла
-        echo -e "\n#define DEFAULT_Kp 22.2\n#define DEFAULT_Ki 1.08\n#define DEFAULT_Kd 114.0" >> Marlin/Configuration.h
+        # 2. Убираем опечатку 'define' без решетки
+        sed -i 's/^define /#define /g' Marlin/Configuration.h
+
+        # 4. Исправляем опечатку с маленькой 'd' в DEFAULT_Kd, делая её заглавной 'D'
+        sed -i 's/DEFAULT_Kd/DEFAULT_KD/g' Marlin/Configuration.h
 
     - name: Run PlatformIO Build (Strict RC)
       run: |
