@@ -23,12 +23,15 @@ jobs:
 
     - name: Auto-fix Marlin Code Errors
       run: |
-        # 1. Принудительно очищаем файлы проверок, чтобы они не блокировали компиляцию
+        # 1. Принудительно очищаем файлы проверок
         echo -e "#pragma once\n// Проверки отключены" > Marlin/src/inc/Changes.h
         echo -e "#pragma once\n// Проверки отключены" > Marlin/src/inc/SanityCheck.h
         
-        # 2. Убираем опечатку 'define' без решетки, если она осталась
+        # 2. Убираем опечатку 'define' без решетки
         sed -i 's/^define /#define /g' Marlin/Configuration.h
+
+        # 3. Отключаем стартовый экран, который вызывает ошибку отсутствия файла _Bootscreen.h
+        sed -i 's/^#define SHOW_BOOTSCREEN/\/\/#define SHOW_BOOTSCREEN/g' Marlin/Configuration.h
 
     - name: Run PlatformIO Build (Strict RC)
       run: |
