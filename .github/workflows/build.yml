@@ -30,8 +30,11 @@ jobs:
         # 2. Убираем опечатку 'define' без решетки
         sed -i 's/^define /#define /g' Marlin/Configuration.h
 
-        # 3. Отключаем стартовый экран, который вызывает ошибку отсутствия файла _Bootscreen.h
+        # 3. Отключаем стартовый экран (ошибка _Bootscreen.h)
         sed -i 's/^#define SHOW_BOOTSCREEN/\/\/#define SHOW_BOOTSCREEN/g' Marlin/Configuration.h
+
+        # 4. Отключаем кастомный экран статуса (ошибка _Statusscreen.h)
+        sed -i 's/^#define SHOW_CUSTOM_STATUS_SCREEN/\/\/#define SHOW_CUSTOM_STATUS_SCREEN/g' Marlin/Configuration.h
 
     - name: Run PlatformIO Build (Strict RC)
       run: |
