@@ -30,7 +30,9 @@ jobs:
         # 2. Убираем опечатку 'define' без решетки
         sed -i 's/^define /#define /g' Marlin/Configuration.h
 
-        # 4. Исправляем опечатку с маленькой 'd' в DEFAULT_Kd, делая её заглавной 'D'
+        # 4. Исправляем регистр букв во всех PID коэффициентах хотэнда
+        sed -i 's/DEFAULT_Kp/DEFAULT_KP/g' Marlin/Configuration.h
+        sed -i 's/DEFAULT_Ki/DEFAULT_KI/g' Marlin/Configuration.h
         sed -i 's/DEFAULT_Kd/DEFAULT_KD/g' Marlin/Configuration.h
 
     - name: Run PlatformIO Build (Strict RC)
