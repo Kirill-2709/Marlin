@@ -14,21 +14,27 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11' # Обновили до стабильной 3.11
+        python-version: '3.11'
 
     - name: Install PlatformIO
       run: |
         python -m pip install --upgrade pip
         pip install -U platformio
 
-    - name: Run PlatformIO Build
+    - name: Run PlatformIO Build (Try RC chip)
+      continue-on-error: true # Если этот чип не подойдет, скрипт не упадет, а пойдет дальше
       run: |
-        # Инструкция: Если сборка снова упадет, замените "stm32f103rc_btt" в строке ниже 
-        # на "STM32F103RE_btt" (строго с соблюдением регистра букв)
         pio run -e STM32F103RC_btt
 
+    - name: Run PlatformIO Build (Try RE chip if RC failed)
+      run: |
+        # Проверяем, создался ли файл. Если нет — собираем под чип RE
+        if [ ! -f .pio/build/STM32F103RC_btt/firmware.bin ]; then
+          echo "RC environment failed or missing, trying RE chip..."
+          pio run -e STM32F103RE_btt
+        fi
+
     - name: Upload Firmware Artifact
-      if: success() # Файл загрузится только при успешной сборке
       uses: actions/upload-artifact@v4
       with:
         name: Marlin-SKR-Mini-E3-V2
